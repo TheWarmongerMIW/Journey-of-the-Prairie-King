@@ -1,20 +1,26 @@
 using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject Zombie;
+    [SerializeField] private GameObject ZombiePrefab;
+    [SerializeField] private float SpawnRate = 10;
+    [SerializeField] private bool CanSpawn = true;
     // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
-         
+        StartCoroutine(Spawn());
     }
-
-    // Update is called once per frame
-    void Update()
+private IEnumerator Spawn ()
     {
-        if (Input.GetKeyDown(KeyCode.E)) Instantiate(Zombie, transform.position, transform.rotation);
+        WaitForSeconds wait = new WaitForSeconds(Random.Range(3,SpawnRate)); 
+        while (CanSpawn)
+        {
+            yield return wait;
+            Instantiate(ZombiePrefab, transform.position, transform.rotation);
+        }
     }
 }
