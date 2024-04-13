@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Tree wall animation
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 1697903221, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
-  - {fileID: 94936632, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
+  - {fileID: -1844074194, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
+  - {fileID: 1904646163, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   m_MinSpeed: 1
   m_MaxSpeed: 1
   m_AnimationStartTime: 0

@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    public LogicScript logic;
     public int MaxHealth;
-    private int damage;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
     }
     public void TakeDamage() 
     { 
-        MaxHealth = MaxHealth - 1;
+        MaxHealth = MaxHealth - logic.damage;
     }
 
     // Update is called once per frame

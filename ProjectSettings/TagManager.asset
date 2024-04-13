@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Logic
+  - Spawner
+  - Timer
   layers:
   - Default
   - TransparentFX

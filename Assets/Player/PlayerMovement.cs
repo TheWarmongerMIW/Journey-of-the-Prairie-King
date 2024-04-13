@@ -10,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
     public float MoveSpeed = 0;
     private  KeyCode UpKey = KeyCode.W, DownKey = KeyCode.S, LeftKey = KeyCode.A, RightKey = KeyCode.D;
     private Vector2 movement;
+
+    private void Start()
+    {
+    }
     void FixedUpdate()
     {
         if (Input.GetKey(UpKey)) PlayerBody.MovePosition(PlayerBody.position + new Vector2(0,1) * MoveSpeed * Time.fixedDeltaTime);
