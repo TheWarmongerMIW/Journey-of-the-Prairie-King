@@ -9,6 +9,7 @@ TagManager:
   - Logic
   - Spawner
   - Timer
+  - Leg
   layers:
   - Default
   - TransparentFX

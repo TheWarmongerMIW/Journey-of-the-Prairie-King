@@ -10,12 +10,25 @@ public class Gun : MonoBehaviour
     public GameObject BulletPrefab;
     public float BulletForce;
     public float FireRate;
+    public Animator animator;
     private float LastShootTime = 0;
     //public float FireRateStartTime;
     private KeyCode UpKey = KeyCode.UpArrow, DownKey = KeyCode.DownArrow, LeftKey = KeyCode.LeftArrow, RightKey = KeyCode.RightArrow;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
+    {
+        animator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+
+    }
+    private void Update()
+    {
+        if (Input.GetKey(UpKey)) animator.SetTrigger("LookUp");
+        if (Input.GetKey(LeftKey)) animator.SetTrigger("LookLeft");
+        if (Input.GetKey(DownKey)) animator.SetTrigger("LookDown");
+        if (Input.GetKey(RightKey)) animator.SetTrigger("LookRight");
+
+    }
+    private void FixedUpdate()
     {if (Time.time > LastShootTime + FireRate)
         {
             if (Input.GetKey(UpKey) || Input.GetKey(LeftKey) || Input.GetKey(DownKey) || Input.GetKey(RightKey)) 
@@ -23,19 +36,19 @@ public class Gun : MonoBehaviour
                 Shoot();
                 LastShootTime = Time.time;
             }
-            void Shoot()
-            {
-                GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
-                Rigidbody2D BulletBody = bullet.GetComponent<Rigidbody2D>();
-                Vector2 Direction = Vector2.zero;
-                if (Input.GetKey(UpKey)) Direction += Vector2.up;
-                if (Input.GetKey(LeftKey)) Direction += Vector2.left;
-                if (Input.GetKey(DownKey)) Direction += Vector2.down;
-                if (Input.GetKey(RightKey)) Direction += Vector2.right;
-                if (Direction != Vector2.zero) Direction.Normalize();
-                BulletBody.velocity = Direction * BulletForce; 
-            }
         }
+    }
+    void Shoot()
+    {
+        GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
+        Rigidbody2D BulletBody = bullet.GetComponent<Rigidbody2D>();
+        Vector2 Direction = Vector2.zero;
+        if (Input.GetKey(UpKey)) Direction += Vector2.up;
+        if (Input.GetKey(LeftKey)) Direction += Vector2.left;
+        if (Input.GetKey(DownKey)) Direction += Vector2.down;
+        if (Input.GetKey(RightKey)) Direction += Vector2.right;
+        if (Direction != Vector2.zero) Direction.Normalize();
+        BulletBody.velocity = Direction * BulletForce;
     }
 }
 /* if (Input.GetKey(UpKey) && IsShootingD == false) UpShoot();

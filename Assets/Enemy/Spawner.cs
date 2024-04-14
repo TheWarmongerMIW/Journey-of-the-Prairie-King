@@ -15,6 +15,8 @@ public class Spawner : MonoBehaviour
     public Transform Gate2; 
     public Transform Gate3;
     public Timercontroller timer;
+    public float MinSpawnTime;
+    public float MaxSpawnTime;  
     Coroutine _Spawn;
     [SerializeField] bool CanSpawn = true;
    /* private float SpawnRate = 13;
@@ -45,11 +47,11 @@ public class Spawner : MonoBehaviour
     }
     private IEnumerator Spawn ()
     {
-        WaitForSeconds wait = new WaitForSeconds(Random.Range(1,10));
+        WaitForSeconds wait = new WaitForSeconds(Random.Range(MinSpawnTime,MaxSpawnTime));
         while (CanSpawn)
         {
             yield return wait;
-            for (var i = 0; i < Random.Range(0, 4); i++)
+            for (var i = 0; i < Random.Range(0, 3); i++)
             {
                 if (random == 1) Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
                 if (random == 2) Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
