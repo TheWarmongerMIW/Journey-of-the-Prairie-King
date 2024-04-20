@@ -9,35 +9,55 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject ZombiePrefab;
-    private int random;
-    private int RandomAmount;
-    public Transform Gate1;
-    public Transform Gate2; 
-    public Transform Gate3;
+    [SerializeField] private float SpawnRate;
+    [SerializeField] private Transform[] Gates;
+    [SerializeField] private List<Transform> GateList = new List<Transform>();   
+    //private Transform randomGate;
     public Timercontroller timer;
-    public float MinSpawnTime;
-    public float MaxSpawnTime;  
-    Coroutine _Spawn;
-    [SerializeField] bool CanSpawn = true;
-   /* private float SpawnRate = 13;
-    [SerializeField] private bool CanSpawn;
-    public bool IsSpawned = false;*/
+    //private int RandomAmount;
+    //public Transform Gate1;
+    //public Transform Gate2; 
+    //public Transform Gate3;
+    //private Coroutine spawn;
+    //[SerializeField] bool CanSpawn = true;
+    /* private float SpawnRate = 13;
+     [SerializeField] private bool CanSpawn;
+     public bool IsSpawned = false;*/
     //[SerializeField] private float MaxSpawnTime;
     //[SerializeField] private float MinSpawnTime;
     //public float TimeTillSpawn;
     // Start is called before the first frame update
+    private void Start()
+    {
+        Gates[0] = GameObject.FindGameObjectWithTag("Gate1").transform;
+    }
     private void Awake()
     {
-        timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timercontroller>();  
-        _Spawn = StartCoroutine(Spawn());
+        //spawn = StartCoroutine(Spawn());
+        timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timercontroller>();
+        SpawnRate = Random.Range(2, 10);
+        GateList = new List<Transform>(Gates);
     }
     private void Update()
     {
-        random = Random.Range(1,8);
-        if (timer.TimeRemaining <= 0)
+        if (GateList.Count <= 0)
         {
-            StopCoroutine(_Spawn);
+            for (var i = 0; i < Gates.Length; i++)
+            {
+                GateList = new List<Transform>(Gates);
+            }
+            //GateList = new List<Transform>(Gates);
         }
+        SpawnRate -= Time.deltaTime;
+        if (SpawnRate <= 0)
+        {
+            Spawn();
+            SpawnRate = Random.Range(2, 10);
+        }
+        //if (timer.TimeRemaining <= 0)
+        //{
+            //StopCoroutine(spawn);
+        //}
         /*TimeTillSpawn = TimeTillSpawn - Time.deltaTime;
         if (TimeTillSpawn <= 0)
         {
@@ -45,14 +65,27 @@ public class Spawner : MonoBehaviour
             SetTimeTillSpawn();    
         }*/
     }
-    private IEnumerator Spawn ()
+    private void Spawn()
     {
-        WaitForSeconds wait = new WaitForSeconds(Random.Range(MinSpawnTime,MaxSpawnTime));
+        for (int i = 0; i < Random.Range(1, GateList.Count); i++)
+        {
+            int randomGate = Random.Range(0, GateList.Count);
+            Instantiate(ZombiePrefab, Gates[randomGate].position, Gates[randomGate].rotation);
+            GateList.RemoveAt(randomGate);
+        }
+    }
+    //}
+    /*private IEnumerator Spawn ()
+    {
+        WaitForSeconds wait = new WaitForSeconds(Random.Range(1,9));
         while (CanSpawn)
         {
             yield return wait;
-            for (var i = 0; i < Random.Range(0, 3); i++)
-            {
+            Debug.Log(wait);
+            Transform RandomGate = Gate[Random.Range(0,Gate.Length)];   
+            Instantiate (ZombiePrefab, RandomGate.position, transform.rotation);   
+            //for (var i = 0; i < Random.Range(0, 3); i++)
+            /*{
                 if (random == 1) Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
                 if (random == 2) Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
                 if (random == 3) Instantiate(ZombiePrefab, Gate3.position, Gate3.rotation);
@@ -79,7 +112,7 @@ public class Spawner : MonoBehaviour
                 }
             }
          }
-    }
+    }*/
     //private void SetTimeTillSpawn()
     //{
         //TimeTillSpawn = Random.Range(MinSpawnTime, MaxSpawnTime);   

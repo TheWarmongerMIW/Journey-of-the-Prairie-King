@@ -11,6 +11,7 @@ public class Gun : MonoBehaviour
     public float BulletForce;
     public float FireRate;
     public Animator animator;
+    public Animator Leganimator;
     private float LastShootTime = 0;
     //public float FireRateStartTime;
     private KeyCode UpKey = KeyCode.UpArrow, DownKey = KeyCode.DownArrow, LeftKey = KeyCode.LeftArrow, RightKey = KeyCode.RightArrow;
@@ -18,15 +19,18 @@ public class Gun : MonoBehaviour
     private void Start()
     {
         animator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-
+        Leganimator = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();    
     }
     private void Update()
     {
         if (Input.GetKey(UpKey)) animator.SetTrigger("LookUp");
         if (Input.GetKey(LeftKey)) animator.SetTrigger("LookLeft");
         if (Input.GetKey(DownKey)) animator.SetTrigger("LookDown");
-        if (Input.GetKey(RightKey)) animator.SetTrigger("LookRight");
-
+        if (Input.GetKey(RightKey))
+        {
+            animator.SetTrigger("LookRight");
+            Leganimator.SetTrigger("IsShootingRight");
+        }
     }
     private void FixedUpdate()
     {if (Time.time > LastShootTime + FireRate)
@@ -43,7 +47,10 @@ public class Gun : MonoBehaviour
         GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
         Rigidbody2D BulletBody = bullet.GetComponent<Rigidbody2D>();
         Vector2 Direction = Vector2.zero;
-        if (Input.GetKey(UpKey)) Direction += Vector2.up;
+        if (Input.GetKey(UpKey))
+        {
+            Direction += Vector2.up;
+        }
         if (Input.GetKey(LeftKey)) Direction += Vector2.left;
         if (Input.GetKey(DownKey)) Direction += Vector2.down;
         if (Input.GetKey(RightKey)) Direction += Vector2.right;
@@ -123,4 +130,5 @@ public class Gun : MonoBehaviour
  GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
  Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
  rb.AddForce(new Vector2(-1, -1) * bulletForce, ForceMode2D.Impulse);
+
 }*/

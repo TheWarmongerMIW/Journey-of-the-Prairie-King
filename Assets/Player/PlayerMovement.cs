@@ -20,25 +20,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKey(UpKey))
+        if (Input.GetKey(UpKey) || Input.GetKey(LeftKey) || Input.GetKey(DownKey) || Input.GetKey(RightKey))
         {
-            animator.SetTrigger("LookUp");
             Leganimator.SetTrigger("IsWalking");
-        }
-        if (Input.GetKey(LeftKey)) 
-        {
-            animator.SetTrigger("LookLeft");
-            Leganimator.SetTrigger("IsWalking");
-        }
-        if (Input.GetKey(DownKey))
-        {
-            animator.SetTrigger("LookDown");
-            Leganimator.SetTrigger("IsWalking");
-        }
-        if (Input.GetKey(RightKey))
-        {
-            animator.SetTrigger("LookRight");
-            Leganimator.SetTrigger("IsWalking");
+            if (Input.GetKey(UpKey)) animator.SetTrigger("LookUp");
+            if (Input.GetKey(LeftKey)) animator.SetTrigger("LookLeft");
+            if (Input.GetKey(DownKey)) animator.SetTrigger("LookDown");
+            if (Input.GetKey(RightKey)) animator.SetTrigger("LookRight");
         }
     }
     void FixedUpdate()
@@ -52,14 +40,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(LeftKey) && Input.GetKey(DownKey)) PlayerBody.MovePosition(PlayerBody.position + new Vector2(-1, -1) * MoveSpeed * Time.fixedDeltaTime);
         if (Input.GetKey(RightKey) && Input.GetKey(DownKey)) PlayerBody.MovePosition(PlayerBody.position + new Vector2(1, -1) * MoveSpeed * Time.fixedDeltaTime);
     }
-    //public void OnFinishedAiming()
-    //{
-    //animator.SetBool("AimDown", false);
-    //}
-    //public void OnFinishedAiming()
-    //{
-        //animator.SetBool("AimDown", false);
-    //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 10)
@@ -68,8 +48,4 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Collided");
         }
     }
-    //private void FixedUpdate()
-    //{
-    //PlayerBody.MovePosition(PlayerBody.position + movement * MoveSpeed * Time.fixedDeltaTime);
-    //}
 }

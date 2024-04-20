@@ -10,6 +10,7 @@ TagManager:
   - Spawner
   - Timer
   - Leg
+  - Gate1
   layers:
   - Default
   - TransparentFX
