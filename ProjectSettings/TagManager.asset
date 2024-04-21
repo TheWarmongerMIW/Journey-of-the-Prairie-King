@@ -11,6 +11,7 @@ TagManager:
   - Timer
   - Leg
   - Gate1
+  - SoundController
   layers:
   - Default
   - TransparentFX

@@ -45,7 +45,9 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.layer == 10)
         {
             Destroy(gameObject);
+            animator.SetBool("IsDead", true);
             Debug.Log("Collided");
+            FindObjectOfType<SoundEffect>().DeathSong();
         }
     }
 }

@@ -9,6 +9,7 @@ using UnityEngine;
 public class Zombie : MonoBehaviour
 {
     public Health Health;  
+    public 
 
     void Start()
     {
