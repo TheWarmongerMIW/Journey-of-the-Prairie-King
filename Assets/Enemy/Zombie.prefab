@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1104671051036505069}
   m_Layer: 10
   m_Name: ZombieGFX
-  m_TagString: Untagged
+  m_TagString: ZombieGFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   radius: 1
   height: 2
   canMove: 1
-  maxSpeed: 1.75
+  maxSpeed: 2
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -328,3 +328,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: {fileID: 0}
+  animator: {fileID: 0}

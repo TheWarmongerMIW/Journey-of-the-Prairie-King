@@ -18,7 +18,7 @@ public class SoundEffect : MonoBehaviour
         
     }
 
-    public void DeathSong()
+    public void OnDeath()
     {
         Overworld.Stop();
         DeathSound.Play();      

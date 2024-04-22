@@ -12,6 +12,7 @@ TagManager:
   - Leg
   - Gate1
   - SoundController
+  - ZombieGFX
   layers:
   - Default
   - TransparentFX
