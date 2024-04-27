@@ -3090,7 +3090,7 @@ Transform:
   m_GameObject: {fileID: 592084925}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.723, y: -1.52, z: 0}
+  m_LocalPosition: {x: -0.723, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3391,7 +3391,7 @@ Transform:
   m_GameObject: {fileID: 807931399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.241, y: -1.52, z: 0}
+  m_LocalPosition: {x: 1.241, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8061,7 +8061,7 @@ Transform:
   m_GameObject: {fileID: 1585651932}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.723, y: -0.53, z: 0}
+  m_LocalPosition: {x: -0.723, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8342,7 +8342,7 @@ Transform:
   m_GameObject: {fileID: 1988508821}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.241, y: -0.53, z: 0}
+  m_LocalPosition: {x: 1.241, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8404,7 +8404,7 @@ Transform:
   m_GameObject: {fileID: 2005794307}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.18, y: -1.52, z: 0}
+  m_LocalPosition: {x: 0.18, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8435,7 +8435,7 @@ Transform:
   m_GameObject: {fileID: 2025166019}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.18, y: -0.53, z: 0}
+  m_LocalPosition: {x: 0.18, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8808,8 +8808,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerBody: {fileID: 8960798189739482074}
-  MoveSpeed: 3.5
-  MoveSpeed2: 2.75
+  MoveSpeed: 4.5
+  MoveSpeed2: 3.75
   animator: {fileID: 9163861432091346293}
   Leganimator: {fileID: 0}
 --- !u!212 &5080324403727777260
