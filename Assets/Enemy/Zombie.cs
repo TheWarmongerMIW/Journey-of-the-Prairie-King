@@ -8,25 +8,19 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour
 {
-    public Health Health;
-   //public Animator animator;
+    public HealthController healthController;
 
     void Start()
     {
-        GetComponent<AIDestinationSetter>().target = FindAnyObjectByType<PlayerMovement>().transform;
-        Health = GetComponent<Health>();
-        Health.MaxHealth = 1;
-        //animator = GameObject.FindGameObjectWithTag("ZombieGFX").GetComponent<Animator>();    
+        GetComponent<AIDestinationSetter>().target = FindAnyObjectByType<PlayerMovement>().transform;    
+        healthController = GetComponent<HealthController>();    
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 6)
         {
-            Health.TakeDamage();
-            if (Health.MaxHealth <= 0)
             {
-                Destroy(gameObject);
-                //animator.SetTrigger("IsDead");
+                healthController.TakeDamage();
             }
         }
     }

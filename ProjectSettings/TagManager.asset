@@ -13,6 +13,7 @@ TagManager:
   - Gate1
   - SoundController
   - ZombieGFX
+  - Gun
   layers:
   - Default
   - TransparentFX
@@ -49,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    uniqueID: 2207794103
     locked: 0

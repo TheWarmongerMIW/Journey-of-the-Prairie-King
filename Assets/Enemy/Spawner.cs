@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Gates[0] = GameObject.FindGameObjectWithTag("Gate1").transform;
+        //Gates[0] = GameObject.FindGameObjectWithTag("Gate1").transform;
     }
     private void Awake()
     {
@@ -40,19 +40,13 @@ public class Spawner : MonoBehaviour
     }
     private void Update()
     {
-        if (GateList.Count <= 0)
-        {
-            for (var i = 0; i < Gates.Length; i++)
-            {
-                GateList = new List<Transform>(Gates);
-            }
-            //GateList = new List<Transform>(Gates);
-        }
+        if (timer.TimeRemaining <= 0) return;
+        if (GateList.Count <= 0) GateList = new List<Transform>(Gates);
         SpawnRate -= Time.deltaTime;
         if (SpawnRate <= 0)
         {
             Spawn();
-            SpawnRate = Random.Range(2, 10);
+            SpawnRate = Random.Range(3, 10);
         }
         //if (timer.TimeRemaining <= 0)
         //{
@@ -67,75 +61,14 @@ public class Spawner : MonoBehaviour
     }
     private void Spawn()
     {
-        for (int i = 0; i < Random.Range(1, GateList.Count); i++)
+        if (GateList.Count == 0) return;    
+        int take = Random.Range(1, Mathf.Min(7,GateList.Count));
+        for (int i = 0; i < take; ++i)
         {
             int randomGate = Random.Range(0, GateList.Count);
-            Instantiate(ZombiePrefab, Gates[randomGate].position, Gates[randomGate].rotation);
+            Instantiate(ZombiePrefab, GateList[randomGate].position, GateList[randomGate].rotation);
+            Debug.Log(GateList[randomGate].name);
             GateList.RemoveAt(randomGate);
         }
     }
-    //}
-    /*private IEnumerator Spawn ()
-    {
-        WaitForSeconds wait = new WaitForSeconds(Random.Range(1,9));
-        while (CanSpawn)
-        {
-            yield return wait;
-            Debug.Log(wait);
-            Transform RandomGate = Gate[Random.Range(0,Gate.Length)];   
-            Instantiate (ZombiePrefab, RandomGate.position, transform.rotation);   
-            //for (var i = 0; i < Random.Range(0, 3); i++)
-            /*{
-                if (random == 1) Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
-                if (random == 2) Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
-                if (random == 3) Instantiate(ZombiePrefab, Gate3.position, Gate3.rotation);
-                if (random == 4)
-                {
-                    Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
-                    Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
-                }
-                if (random == 5)
-                {
-                    Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
-                    Instantiate(ZombiePrefab, Gate3.position, Gate3.rotation);
-                }
-                if (random == 6)
-                {
-                    Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
-                    Instantiate(ZombiePrefab, Gate3.position, Gate3.rotation);
-                }
-                if (random == 7)
-                {
-                    Instantiate(ZombiePrefab, Gate1.position, Gate1.rotation);
-                    Instantiate(ZombiePrefab, Gate2.position, Gate2.rotation);
-                    Instantiate(ZombiePrefab, Gate3.position, Gate3.rotation);
-                }
-            }
-         }
-    }*/
-    //private void SetTimeTillSpawn()
-    //{
-        //TimeTillSpawn = Random.Range(MinSpawnTime, MaxSpawnTime);   
-    //}
-    /*private void FixedUpdate()
-    {
-        if (Random.Range(0, 2) == 0)
-        {
-            CanSpawn = false;
-        }
-        if (Random.Range(0, 2) == 1)
-        {
-            CanSpawn = true;
-        }
-    }
-    private IEnumerator Spawn ()
-    {
-        WaitForSeconds wait = new WaitForSeconds(Random.Range(4,SpawnRate));    
-        while (CanSpawn)
-        {
-            yield return new WaitForSeconds(Random.Range(4,SpawnRate));
-            Instantiate(ZombiePrefab, transform.position, transform.rotation);
-            IsSpawned = true;
-        }
-    }*/
 }

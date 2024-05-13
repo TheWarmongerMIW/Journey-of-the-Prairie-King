@@ -41,14 +41,4 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(LeftKey) && Input.GetKey(DownKey)) PlayerBody.MovePosition(PlayerBody.position + new Vector2(-1, -1) * MoveSpeed2 * Time.fixedDeltaTime);
         if (Input.GetKey(RightKey) && Input.GetKey(DownKey)) PlayerBody.MovePosition(PlayerBody.position + new Vector2(1, -1) * MoveSpeed2 * Time.fixedDeltaTime);
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 10)
-        {
-            Destroy(gameObject);
-            animator.SetBool("IsDead", true);
-            Debug.Log("Collided");
-            FindObjectOfType<SoundEffect>().OnDeath();
-        }
-    }
 }

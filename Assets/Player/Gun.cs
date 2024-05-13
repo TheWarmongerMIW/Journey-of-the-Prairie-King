@@ -12,12 +12,14 @@ public class Gun : MonoBehaviour
     public float FireRate;
     public Animator animator;
     public Animator Leganimator;
+    public float Damage;
     private float LastShootTime = 0;
     //public float FireRateStartTime;
     private KeyCode UpKey = KeyCode.UpArrow, DownKey = KeyCode.DownArrow, LeftKey = KeyCode.LeftArrow, RightKey = KeyCode.RightArrow;
 
     private void Start()
     {
+        Damage = 1;
         animator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         Leganimator = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();    
     }
