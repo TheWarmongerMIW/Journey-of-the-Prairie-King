@@ -5,10 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-
 public class Zombie : MonoBehaviour
 {
     public HealthController healthController;
+    public AudioSource DeathSound1;
+    public AudioSource DeathSound2;
 
     void Start()
     {
@@ -21,6 +22,8 @@ public class Zombie : MonoBehaviour
         {
             {
                 healthController.TakeDamage();
+                GetComponent<LootBag>().SpawnLoot(transform.position);
+                if (Random.Range(1, 3) == 1) DeathSound1.Play(); else DeathSound2.Play();
             }
         }
     }

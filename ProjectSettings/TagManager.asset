@@ -10,10 +10,19 @@ TagManager:
   - Spawner
   - Timer
   - Leg
-  - Gate1
-  - SoundController
   - ZombieGFX
   - Gun
+  - Loot
+  - Coin
+  - Wheel
+  - Bandolier
+  - 1-Up
+  - Badge
+  - Coffee
+  - Nuke
+  - Shotgun
+  - Smoke bomb
+  - Tombstone
   layers:
   - Default
   - TransparentFX
@@ -26,8 +35,8 @@ TagManager:
   - FirstFloor
   - GroundFloor
   - Zombie
-  - 
-  - 
+  - Loot
+  - Coin 1
   - 
   - 
   - 

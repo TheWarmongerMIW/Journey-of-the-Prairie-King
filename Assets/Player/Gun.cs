@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Gun : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class Gun : MonoBehaviour
     public float BulletForce;
     public float FireRate;
     public Animator animator;
-    public Animator Leganimator;
+    public Animator leganim;
     public float Damage;
+    public AudioSource GunShot;
     private float LastShootTime = 0;
     //public float FireRateStartTime;
     private KeyCode UpKey = KeyCode.UpArrow, DownKey = KeyCode.DownArrow, LeftKey = KeyCode.LeftArrow, RightKey = KeyCode.RightArrow;
@@ -21,17 +23,73 @@ public class Gun : MonoBehaviour
     {
         Damage = 1;
         animator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-        Leganimator = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();    
+        leganim = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();    
     }
     private void Update()
     {
-        if (Input.GetKey(UpKey)) animator.SetTrigger("LookUp");
-        if (Input.GetKey(LeftKey)) animator.SetTrigger("LookLeft");
-        if (Input.GetKey(DownKey)) animator.SetTrigger("LookDown");
+        if (Input.GetKey(UpKey))
+        {
+            animator.SetTrigger("LookUp");
+            leganim.SetTrigger("IsAimingUp");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAimingUp");
+            }
+        }
+        if (Input.GetKey(LeftKey))
+        {
+            animator.SetTrigger("LookLeft");
+            leganim.SetTrigger("IsAiming");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAiming");
+            }
+        }
+        if (Input.GetKey(DownKey))
+        {
+            animator.SetTrigger("LookDown");
+            leganim.SetTrigger("IsAimingUp");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAimingUp");
+            }
+        }
         if (Input.GetKey(RightKey))
         {
             animator.SetTrigger("LookRight");
-            Leganimator.SetTrigger("IsShootingRight");
+            leganim.SetTrigger("IsAiming");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAiming");
+            }
+        }
+        if (Input.GetKey(UpKey) && Input.GetKey(LeftKey) || Input.GetKey(DownKey) && Input.GetKey(LeftKey))
+        {
+            animator.SetTrigger("LookLeft");
+            leganim.SetTrigger("IsAiming");
+            leganim.ResetTrigger("IsAimingUp");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAiming");
+                leganim.ResetTrigger("IsAimingUp");
+            }
+        }
+        if (Input.GetKey(UpKey) && Input.GetKey(RightKey) || Input.GetKey(DownKey) && Input.GetKey(RightKey))
+        {
+            animator.SetTrigger("LookRight");
+            leganim.SetTrigger("IsAiming");
+            leganim.ResetTrigger("IsAimingUp");
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                leganim.SetTrigger("IsWalking");
+                leganim.ResetTrigger("IsAiming");
+                leganim.ResetTrigger("IsAimingUp");
+            }
         }
     }
     private void FixedUpdate()
@@ -40,8 +98,10 @@ public class Gun : MonoBehaviour
             if (Input.GetKey(UpKey) || Input.GetKey(LeftKey) || Input.GetKey(DownKey) || Input.GetKey(RightKey)) 
             {
                 Shoot();
+                GunShot.Play();
                 LastShootTime = Time.time;
             }
+            else GunShot.Stop();    
         }
     }
     void Shoot()
@@ -60,77 +120,3 @@ public class Gun : MonoBehaviour
         BulletBody.velocity = Direction * BulletForce;
     }
 }
-/* if (Input.GetKey(UpKey) && IsShootingD == false) UpShoot();
- if (Input.GetKey(LeftKey) && IsShootingD == false) LeftShoot();
- if (Input.GetKey(DownKey ) && IsShootingD == false) DownShoot();        
- if (Input.GetKey(RightKey) && IsShootingD == false) RightShoot();
- if (Input.GetKey(UpKey) && Input.GetKey(LeftKey))
- {
-     IsShootingD = true;
-     DLeftShoot();
- }else IsShootingD = false;
- if (Input.GetKey(UpKey) && Input.GetKey(RightKey))
- {
-     IsShootingD = true;
-     DRightShoot();
- }else IsShootingD = false;
- if (Input.GetKey(DownKey) && Input.GetKey(RightKey))
- {
-     IsShootingD = true;
-     DDownRightShoot();
- }else IsShootingD = false;
- if (Input.GetKey(DownKey) && Input.GetKey(LeftKey))
- {
-     IsShootingD = true;
-     DDownLeftShoot();
- }else IsShootingD = false;
-}
- void UpShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(transform.up * new Vector2 (0,1) * bulletForce, ForceMode2D.Impulse);
-}   
- void LeftShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(-1, 0) * bulletForce, ForceMode2D.Impulse);
-}
- void DownShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(0, -1) * bulletForce, ForceMode2D.Impulse);
-}   
- void RightShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(1, 0) * bulletForce, ForceMode2D.Impulse);
-}
- void DLeftShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(-1, 1) * bulletForce, ForceMode2D.Impulse);
-}
- void DRightShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(1, 1) * bulletForce, ForceMode2D.Impulse);
-}
- void DDownRightShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(1, -1) * bulletForce, ForceMode2D.Impulse);
-}   
- void DDownLeftShoot()
-{
- GameObject Bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
- Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
- rb.AddForce(new Vector2(-1, -1) * bulletForce, ForceMode2D.Impulse);
-
-}*/
