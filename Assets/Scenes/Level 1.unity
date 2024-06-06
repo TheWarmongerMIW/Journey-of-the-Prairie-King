@@ -7158,7 +7158,7 @@ MonoBehaviour:
   Leganimator: {fileID: 0}
   Coin: {fileID: 9163861432091346297}
   PU: {fileID: 9163861432091346298}
-  OnCollect:
+  StopSpawning:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 804272477}
@@ -7206,6 +7206,33 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCollect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 315476242876021342, guid: 67965b8ff4e06704cb4704b2fc160533, type: 3}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2055474420181822836, guid: 67965b8ff4e06704cb4704b2fc160533, type: 3}
+        m_TargetAssemblyTypeName: DestroyLoot, Assembly-CSharp
+        m_MethodName: Destroyloot
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.9
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -8054,7 +8081,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2238647683198641571}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b23ad4deb89d9eb41b05a17367e5f6b9, type: 3}

@@ -8,6 +8,7 @@ public class Loot : ScriptableObject
 {
     public Sprite lootsprite;
     public PolygonCollider2D collider;
+    //public UnityEvent OnCollected;
     public string lootname;
     public int dropchance;
 
@@ -16,4 +17,9 @@ public class Loot : ScriptableObject
         this.lootname = lootname;
         this.dropchance = dropchance; 
     }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+        //if (collision.gameObject.tag == "Player") OnCollected.Invoke();
+    //}
 }

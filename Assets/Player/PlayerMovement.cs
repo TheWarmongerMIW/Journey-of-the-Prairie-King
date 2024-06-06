@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator Leganimator;
     public AudioSource Coin;
     public AudioSource PU;
+    public UnityEvent StopSpawning;
     public UnityEvent OnCollect;
     public Spawner spawner;
     private  KeyCode UpKey = KeyCode.W, DownKey = KeyCode.S, LeftKey = KeyCode.A, RightKey = KeyCode.D;
@@ -37,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.P)) GetComponent<Collider2D>().enabled = false;
         else if (Input.GetKey(KeyCode.O)) GetComponent<Collider2D>().enabled = true;
-        if (Input.GetKey(KeyCode.R)) OnCollect.Invoke(); 
+        if (Input.GetKey(KeyCode.R)) StopSpawning.Invoke(); 
     }
     void FixedUpdate()
     {
@@ -54,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == 11)
         {
-            Destroy(collision.gameObject);
+            OnCollect.Invoke();
             if (collision.gameObject.tag == "Coin") Coin.Play();
             if (collision.gameObject.tag == "Wheel" || collision.gameObject.tag == "Bandolier" || collision.gameObject.tag == "1-Up" || collision.gameObject.tag == "Badge" || collision.gameObject.tag == "Coffee" || collision.gameObject.tag == "Nuke" || collision.gameObject.tag == "Shotgun" || collision.gameObject.tag == "Smoke bomb" || collision.gameObject.tag == "Tombstone") PU.Play();
         }
