@@ -13,7 +13,6 @@ TagManager:
   - ZombieGFX
   - Gun
   - Loot
-  - Coin
   - Wheel
   - Bandolier
   - 1-Up
@@ -23,6 +22,8 @@ TagManager:
   - Shotgun
   - Smoke bomb
   - Tombstone
+  - Coin1
+  - Coin5
   layers:
   - Default
   - TransparentFX
