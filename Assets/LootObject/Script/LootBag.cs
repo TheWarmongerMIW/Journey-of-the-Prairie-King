@@ -8,12 +8,6 @@ public class LootBag : MonoBehaviour
 {
     public GameObject lootprefab;
     public List<Loot> lootlist = new List<Loot>();
-    public InventoryManager inventory;
-
-    private void Start()
-    {
-        inventory = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();    
-    }
 
     Loot GetDroppedItem()
     {
@@ -28,7 +22,7 @@ public class LootBag : MonoBehaviour
             Loot droppedItem = possibleItems[Random.Range(0, possibleItems.Count)];
             return droppedItem;
         }
-        Debug.Log("No loot dropped");
+        //Debug.Log("No loot dropped");//
         return null;
     }
     public void SpawnLoot(Vector3 spawnPos)

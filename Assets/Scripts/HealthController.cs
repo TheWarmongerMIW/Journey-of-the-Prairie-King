@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 
 public class HealthController : MonoBehaviour
 {
-    [SerializeField] private float Health;
+    public float Health;
     public Gun gun;
     public UnityEvent OnDied;
 
@@ -22,13 +22,15 @@ public class HealthController : MonoBehaviour
             return;
         }
         Health -= gun.Damage;
-        if (Health == 0)
+        if (Health <= 0)
         {
+            Health = 0;
             OnDied.Invoke();
         }
-        if (Health < 0)
-        {
-            Health = 0;  
-        }
+    }
+    public void TakeNuke()
+    {
+        Health -= 10;
+        OnDied.Invoke();
     }
 }

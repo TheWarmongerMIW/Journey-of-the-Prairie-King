@@ -24,6 +24,7 @@ TagManager:
   - Tombstone
   - Coin1
   - Coin5
+  - DeadEnemy
   layers:
   - Default
   - TransparentFX

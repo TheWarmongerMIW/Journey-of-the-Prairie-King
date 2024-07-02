@@ -8,9 +8,10 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 3)
+        UsePU usepu = GameObject.Find("Player").GetComponent<UsePU>();
+        if (collision.gameObject.layer == 3 && usepu.IsUsingTombstone == false)
         {
-            var healthController = collision.gameObject.GetComponent<HealthController>();   
+            var healthController = collision.gameObject.GetComponent<HealthController>();
             healthController.TakeDamage();
         }
     }

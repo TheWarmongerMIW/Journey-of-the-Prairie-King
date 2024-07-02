@@ -9,27 +9,32 @@ public class Timercontroller : MonoBehaviour
     public Image TimerBar;
     public float TimeRemaining;
     public float MaxTime;
-    public Spawner spawner;
-    public PlayerMovement playerMovement;   
+    public DetectEnim detectenim;
+    public PlayerMovement player;
     // Start is called before the first frame update
     void Start()
-    {
-        spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<Spawner>();  
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent <PlayerMovement>();    
-        TimeRemaining = MaxTime;
+    {       
+        TimeRemaining = MaxTime;   
+        detectenim = GameObject.Find("GroundFloor").GetComponent<DetectEnim>(); 
+        player = GameObject.Find("Player").GetComponent<PlayerMovement>();  
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if (playerMovement.enabled == true && TimeRemaining > 0 && spawner.ZombiePrefab != null)
+        if (detectenim.Detected == true && player.enabled == true)
         {
-            TimeRemaining = TimeRemaining - Time.deltaTime;
-            TimerBar.fillAmount = TimeRemaining / MaxTime;
+            StartTimer();   
         }
+    }
+
+    public void StartTimer()
+    {
+        TimeRemaining = TimeRemaining - Time.deltaTime;
+        TimerBar.fillAmount = TimeRemaining / MaxTime;
     }
     public void OnDeath()
     {
-        TimerBar.fillAmount = TimeRemaining /MaxTime;
+        TimerBar.fillAmount = TimeRemaining / MaxTime; 
     }
 }

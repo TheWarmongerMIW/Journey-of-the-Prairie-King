@@ -11,8 +11,8 @@ public class LivesCount : MonoBehaviour
     {
         livescount = GetComponent<TextMeshProUGUI>();
     }
-    public void UpdateLivesCount(InventoryManager inventory)
+    public void UpdateLivesCount(LootManager lootmanager)
     {
-        livescount.text = inventory.NumberofLife.ToString();
+        livescount.text = lootmanager.NumberofLives.ToString();
     }
 }

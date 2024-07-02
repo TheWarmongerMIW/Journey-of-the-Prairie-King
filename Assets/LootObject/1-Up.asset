@@ -15,5 +15,4 @@ MonoBehaviour:
   lootsprite: {fileID: -86995586, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   collider: {fileID: 0}
   lootname: 1-Up
-  dropchance: 5
-  inventory: {fileID: 0}
+  dropchance: 4

@@ -10,12 +10,10 @@ public class Loot : ScriptableObject
     public PolygonCollider2D collider;
     public string lootname;
     public int dropchance; 
-    public InventoryManager inventory;  
-
 
     public Loot(string lootname, int dropchance)
     {
         this.lootname = lootname;
-        this.dropchance = dropchance; 
+        this.dropchance = dropchance;
     }
 }

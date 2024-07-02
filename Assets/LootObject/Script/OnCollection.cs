@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class OnCollection: MonoBehaviour
 {
     public UnityEvent OnCollect;
-    public Sprite sprite;
 
     public void OnCollisionEnter2D(Collision2D collision)
     {

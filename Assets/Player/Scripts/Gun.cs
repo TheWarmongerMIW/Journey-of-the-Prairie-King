@@ -10,23 +10,25 @@ public class Gun : MonoBehaviour
     //public Transform FirePoint;
     public GameObject BulletPrefab;
     public float BulletForce;
-    public float FireRate;
+    public float FireRate ;
     public Animator cbanim;
     public Animator leganim;
     public float Damage;
     public AudioSource GunShot;
     private float LastShootTime = 0;
+    public UsePU usepu;
     private KeyCode UpKey = KeyCode.UpArrow, DownKey = KeyCode.DownArrow, LeftKey = KeyCode.LeftArrow, RightKey = KeyCode.RightArrow;
 
     private void Start()
     {
         Damage = 1;
         cbanim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-        leganim = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();    
+        leganim = GameObject.FindGameObjectWithTag("Leg"). GetComponent<Animator>();  
+        usepu = GameObject.Find("Player").GetComponent<UsePU>();    
     }
     private void Update()
     {
-        if (Input.GetKey(UpKey))
+        if (Input.GetKey(UpKey) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookUp");
             leganim.SetTrigger("IsAimingUp");
@@ -39,7 +41,7 @@ public class Gun : MonoBehaviour
                 cbanim.ResetTrigger("LookDown");
             }
         }
-        if (Input.GetKey(LeftKey))
+        if (Input.GetKey(LeftKey) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookLeft");
             leganim.SetTrigger("IsAiming");
@@ -52,7 +54,7 @@ public class Gun : MonoBehaviour
                 cbanim.ResetTrigger("LookDown");
             }
         }
-        if (Input.GetKey(DownKey))
+        if (Input.GetKey(DownKey) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookDown");
             leganim.SetTrigger("IsAimingUp");
@@ -65,7 +67,7 @@ public class Gun : MonoBehaviour
                 cbanim.ResetTrigger("LookRight");
             }
         }
-        if (Input.GetKey(RightKey))
+        if (Input.GetKey(RightKey) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookRight");
             leganim.SetTrigger("IsAiming");
@@ -79,12 +81,12 @@ public class Gun : MonoBehaviour
             }
         }
         //===UpLeft&DownLeft==//
-        if (Input.GetKey(UpKey) && Input.GetKey(LeftKey) || Input.GetKey(DownKey) && Input.GetKey(LeftKey))
+        if ((Input.GetKey(UpKey) && Input.GetKey(LeftKey) || Input.GetKey(DownKey) && Input.GetKey(LeftKey)) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookLeft");
+            cbanim.ResetTrigger("LookDown");
             leganim.SetTrigger("IsAiming");
             leganim.ResetTrigger("IsAimingUp");
-            cbanim.ResetTrigger("LookDown");
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
                 leganim.SetTrigger("IsWalking");
@@ -96,7 +98,7 @@ public class Gun : MonoBehaviour
             }
         }
         //===UpRight==//
-        if (Input.GetKey(UpKey) && Input.GetKey(RightKey) || Input.GetKey(DownKey) && Input.GetKey(RightKey))
+        if ((Input.GetKey(UpKey) && Input.GetKey(RightKey) || Input.GetKey(DownKey) && Input.GetKey(RightKey)) && usepu.IsUsingTombstone == false)
         {
             cbanim.SetTrigger("LookRight");
             leganim.SetTrigger("IsAiming");

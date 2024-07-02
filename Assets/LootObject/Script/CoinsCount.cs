@@ -10,8 +10,8 @@ public class CoinsCount : MonoBehaviour
     {
         coincount = GetComponent<TextMeshProUGUI>();    
     }
-    public void UpdateCoinText(InventoryManager inventory)
+    public void UpdateCoinText(LootManager lootmanager)
     {
-        coincount.text = inventory.NumberofCoins.ToString();
+        coincount.text = lootmanager.NumberofCoins.ToString();
     }
 }

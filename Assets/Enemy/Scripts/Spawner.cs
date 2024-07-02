@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private List<Transform> GateList = new List<Transform>();   
     //private Transform randomGate;
     public Timercontroller timer;
+    public Instruction instruction;
     //private int RandomAmount;
     //public Transform Gate1;
     //public Transform Gate2; 
@@ -35,29 +36,23 @@ public class Spawner : MonoBehaviour
     {
         //spawn = StartCoroutine(Spawn());
         timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timercontroller>();
+        instruction = GameObject.Find("Instruction").GetComponent<Instruction>();   
         SpawnRate = Random.Range(2, 10);
         GateList = new List<Transform>(Gates);
     }
     private void Update()
     {
-        if (timer.TimeRemaining <= 0) return;
-        if (GateList.Count <= 0) GateList = new List<Transform>(Gates);
-        SpawnRate -= Time.deltaTime;
-        if (SpawnRate <= 0)
+        if (instruction == null)
         {
-            Spawn();
-            SpawnRate = Random.Range(3, 10);
+            if (timer.TimeRemaining <= 0) return;
+            if (GateList.Count <= 0) GateList = new List<Transform>(Gates);
+            SpawnRate -= Time.deltaTime;
+            if (SpawnRate <= 0)
+            {
+                Spawn();
+                SpawnRate = Random.Range(3, 10);
+            }
         }
-        //if (timer.TimeRemaining <= 0)
-        //{
-            //StopCoroutine(spawn);
-        //}
-        /*TimeTillSpawn = TimeTillSpawn - Time.deltaTime;
-        if (TimeTillSpawn <= 0)
-        {
-            Instantiate(ZombiePrefab, transform.position, transform.rotation);
-            SetTimeTillSpawn();    
-        }*/
     }
     private void Spawn()
     {
@@ -67,7 +62,7 @@ public class Spawner : MonoBehaviour
         {
             int randomGate = Random.Range(0, GateList.Count);
             Instantiate(ZombiePrefab, GateList[randomGate].position, GateList[randomGate].rotation);
-            Debug.Log(GateList[randomGate].name);
+            //Debug.Log(GateList[randomGate].name);//
             GateList.RemoveAt(randomGate);
         }
     }

@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lootsprite: {fileID: -225201601, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   collider: {fileID: 0}
-  Coin15: {fileID: 0}
   lootname: Nuke
-  dropchance: 8
+  dropchance: 100
