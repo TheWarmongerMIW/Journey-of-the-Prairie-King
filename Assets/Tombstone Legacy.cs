@@ -18,8 +18,8 @@ public class TombstoneLegacy : MonoBehaviour
     public AudioController audiocontroller;
     [SerializeField] private LootSlot lootslot;
     public bool IsUsingTombstone = false;
-    [SerializeField] private bool IsUsingCoffee = false;
-    [SerializeField] private bool IsUsingBandolier = false;
+    //[SerializeField] private bool IsUsingCoffee = false;
+    //[SerializeField] private bool IsUsingBandolier = false;
 
     void Start()
     {

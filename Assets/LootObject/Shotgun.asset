@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lootsprite: {fileID: -1954831255, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   collider: {fileID: 0}
-  Coin15: {fileID: 0}
   lootname: Shotgun
   dropchance: 8

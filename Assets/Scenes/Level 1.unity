@@ -4415,7 +4415,7 @@ Canvas:
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
+  m_OverridePixelPerfect: 1
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
@@ -14401,8 +14401,8 @@ GameObject:
   - component: {fileID: 207790592516013833}
   - component: {fileID: 8960798189739482074}
   - component: {fileID: 4121610006079337044}
-  - component: {fileID: 4549364294528597815}
   - component: {fileID: 9163861432091346293}
+  - component: {fileID: 4549364294528597815}
   - component: {fileID: 9163861432091346294}
   - component: {fileID: 9163861432091346301}
   - component: {fileID: 9163861432091346300}
@@ -14497,11 +14497,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134d4487962f8f24c8fd59c255c4b40d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usepu: {fileID: 0}
+  gun: {fileID: 0}
   PlayerBody: {fileID: 8960798189739482074}
   MoveSpeed: 4.25
   MoveSpeed2: 3.5
   animator: {fileID: 9163861432091346293}
   Leganimator: {fileID: 0}
+  isMoving: 0
 --- !u!212 &5080324403727777260
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14596,6 +14599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353d24f19646754aa2219ed411711cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playermovement: {fileID: 0}
   BulletPrefab: {fileID: 6577267067399506718, guid: 534f1ea3cc88193418bcb44e54a36b1b, type: 3}
   BulletForce: 10
   FireRate: 0.35
@@ -14604,6 +14608,11 @@ MonoBehaviour:
   Damage: 0
   GunShot: {fileID: 8167598553044034110}
   usepu: {fileID: 0}
+  isShooting: 0
+  isShootingUp: 0
+  isShootingLeft: 0
+  isShootingDown: 0
+  isShootingRight: 0
 --- !u!1 &8167598553044034109
 GameObject:
   m_ObjectHideFlags: 0
@@ -14729,7 +14738,6 @@ GameObject:
   - component: {fileID: 7229959664105145817}
   - component: {fileID: 5080324403727777260}
   - component: {fileID: 3223301284839887202}
-  - component: {fileID: 8796342733230952211}
   - component: {fileID: 8796342733230952213}
   - component: {fileID: 8796342733230952212}
   m_Layer: 3
@@ -14739,18 +14747,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8796342733230952211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8796342733230952210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04bcf43e57353694396c8a6006e9c40c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &8796342733230952212
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14979,18 +14975,6 @@ MonoBehaviour:
           m_StringArgument: IsDead
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8796342733230952211}
-        m_TargetAssemblyTypeName: NewBehaviourScript, Assembly-CSharp
-        m_MethodName: DestroyEnemy
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: IsDead
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4121610006079337044}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -15103,6 +15087,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: LootManager, Assembly-CSharp
         m_MethodName: LoseLives
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: IsDead
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3087198201552666404, guid: 1acd0cae1ada7f744b13831cf25cd6e6, type: 3}
+        m_TargetAssemblyTypeName: NewBehaviourScript, Assembly-CSharp
+        m_MethodName: DestroyEnemyOnCBDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: IsDead
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8796342733230952210}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15527,17 +15535,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc417487cb40e4a4ebd8f10a9d21ca89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnertop: {fileID: 0}
+  spawnerleft: {fileID: 0}
+  spawnerbot: {fileID: 0}
+  spawnerright: {fileID: 0}
   lightning: {fileID: 277290887}
   TombstoneBackground: {fileID: 932391780}
   TimerUI: {fileID: 1663207723}
   LootCanvas: {fileID: 1780098517}
-  Leg: {fileID: 8796342733230952210}
-  cbanimator: {fileID: 9163861432091346293}
+  leg: {fileID: 8796342733230952210}
   audiocontroller: {fileID: 0}
+  cbanim: {fileID: 0}
+  player: {fileID: 0}
+  gun: {fileID: 0}
   lootslot: {fileID: 0}
   IsUsingTombstone: 0
+  IsUsingShotgun: 0
+  IsUsingBadge: 0
   IsUsingCoffee: 0
   IsUsingBandolier: 0
+  currentstate: 
 --- !u!82 &9163861432091346302
 AudioSource:
   m_ObjectHideFlags: 0

@@ -15,4 +15,4 @@ MonoBehaviour:
   lootsprite: {fileID: -225201601, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   collider: {fileID: 0}
   lootname: Nuke
-  dropchance: 100
+  dropchance: 8

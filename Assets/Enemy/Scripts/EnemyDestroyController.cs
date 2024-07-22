@@ -8,4 +8,20 @@ public class NewBehaviourScript : MonoBehaviour
     {
         Destroy(gameObject, delay);
     }
+
+    public void DestroyEnemyOnCBDeath()
+    {
+        GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] deadenemies = GameObject.FindGameObjectsWithTag("DeadEnemy");
+
+        foreach (GameObject zombie in zombies)
+        {
+            Destroy(zombie);    
+        }
+        
+        foreach (GameObject deadenemy in deadenemies)
+        {
+            Destroy(deadenemy);    
+        }
+    }
 }

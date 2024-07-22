@@ -16,4 +16,3 @@ MonoBehaviour:
   collider: {fileID: 0}
   lootname: Coin 5
   dropchance: 9
-  inventory: {fileID: 0}

@@ -15,4 +15,4 @@ MonoBehaviour:
   lootsprite: {fileID: 1837160022, guid: 1b3502b37590af2499d45d7a9836ef04, type: 3}
   collider: {fileID: 0}
   lootname: Coffee
-  dropchance: 14
+  dropchance: 12

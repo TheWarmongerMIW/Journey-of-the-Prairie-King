@@ -8,8 +8,8 @@ public class CollisionDetect : MonoBehaviour
     public LootManager lootmanager;
     public LootSlot lootslot;
     public UsePU usepu;
-    public GameObject loot;
     public AudioController audiocontroller;
+    public GameObject loot;
     public AudioSource Coin;
     public AudioSource PU;
     void Start()
@@ -26,22 +26,38 @@ public class CollisionDetect : MonoBehaviour
         {
             PU.Play();
             lootmanager.AddLoot(loot);
-            if (this.gameObject.tag == "Coffee" && lootmanager.FullBag == true)
+            if (lootmanager.FullBag == true)
             {
-                usepu.CollidedCoffee();
-                audiocontroller.PU.Play();
                 PU.Stop();
-            }
-            if (this.gameObject.tag == "Bandolier" && lootmanager.FullBag == true)
-            {
-                usepu.CollidedBandolier();
-                audiocontroller.Gunload.Play();
-                PU.Stop();
-            }
-            if (this.gameObject.tag == "Nuke" && lootmanager.FullBag == true)
-            {
-                usepu.CollidedNuke();
-                PU.Stop();
+                if (this.gameObject.tag == "Coffee")
+                {
+                    usepu.CollidedCoffee();
+                    audiocontroller.PU.Play();
+                }
+                if (this.gameObject.tag == "Bandolier")
+                {
+                    usepu.CollidedBandolier();
+                    audiocontroller.Gunload.Play();
+                }
+                if (this.gameObject.tag == "Nuke")
+                {
+                    usepu.CollidedNuke();
+                }
+                if (this.gameObject.tag == "Tombstone")
+                {
+                    usepu.CollidedTombstone();
+                    audiocontroller.OnTombstone();
+                }
+                if (this.gameObject.tag == "Shotgun")
+                {
+                    usepu.CollidedShotgun();
+                    audiocontroller.Gunload.Play();
+                }
+                if (this.gameObject.tag == "Badge")
+                {
+                    usepu.CollidedBadge();
+                    audiocontroller.Gunload.Play();
+                }
             }
         }
         if (this.gameObject.tag == "Coin1" || this.gameObject.tag == "Coin5")

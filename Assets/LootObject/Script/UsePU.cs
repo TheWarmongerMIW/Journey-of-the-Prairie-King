@@ -7,28 +7,55 @@ using Unity.VisualScripting;
 using System;
 using Pathfinding;
 using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 public class UsePU : MonoBehaviour
 {
     public Coroutine coffeecoroutine;
     public Coroutine bandoliercoroutine;
-    public Coroutine tombstonecoroutine;
     public Coroutine nukecoroutine;
-    public GameObject lightning;
-    public GameObject TombstoneBackground;
-    public GameObject TimerUI;
-    public GameObject LootCanvas;
-    public GameObject Leg;
-    public Animator cbanimator;
-    public AudioController audiocontroller;
+    public Coroutine tombstonecoroutine;
+    public Coroutine shotguncoroutine;
+    public Coroutine badgecoroutine;
+
+    [SerializeField] private Spawner spawnertop; 
+    [SerializeField] private Spawner spawnerleft; 
+    [SerializeField] private Spawner spawnerbot; 
+    [SerializeField] private Spawner spawnerright; 
+    [SerializeField] private GameObject lightning;
+    [SerializeField] private GameObject TombstoneBackground;
+    [SerializeField] private GameObject TimerUI;
+    [SerializeField] private GameObject LootCanvas;
+    [SerializeField] private GameObject leg;
+    [SerializeField] private AudioController audiocontroller;
+    [SerializeField] private Animator cbanim;
+    [SerializeField] private PlayerMovement player;
+    [SerializeField] private Gun gun;
     [SerializeField] private LootSlot lootslot;
+
     public bool IsUsingTombstone = false;
+    public bool IsUsingShotgun = false;
+    public bool IsUsingBadge = false;
+    public bool IsUsingWheel = false;
     [SerializeField] private bool IsUsingCoffee = false;
     [SerializeField] private bool IsUsingBandolier = false;
+    [SerializeField] private string currentstate;
 
+    const string DefaultState = "Default State";
+    const string CBLightning = "CBLightning";
+    const string CBZombie = "CBZombie";
     void Start()
     {
-        lootslot = GameObject.Find("LootSlot").GetComponent<LootSlot>();
         audiocontroller = GameObject.Find("Player").GetComponent<AudioController>();    
+        cbanim = GameObject.Find("Player").GetComponent<Animator>();
+        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+
+        spawnertop = GameObject.Find("SpawnerTop").GetComponent<Spawner>();
+        spawnerleft = GameObject.Find("SpawnerLeft").GetComponent<Spawner>();
+        spawnerbot = GameObject.Find("SpawnerBot").GetComponent<Spawner>();
+        spawnerright = GameObject.Find("SpawnerRight").GetComponent<Spawner>();
+
+        gun = GameObject.Find("Gun").GetComponent<Gun>();   
+        lootslot = GameObject.Find("LootSlot").GetComponent<LootSlot>();
     }
 
     void Update()
@@ -65,6 +92,39 @@ public class UsePU : MonoBehaviour
                     nukecoroutine = StartCoroutine(UsingNuke());
                     lootslot.OnUsed();
                 }
+                if (lootslot.loottag == "Tombstone")
+                {
+                    if (tombstonecoroutine != null)
+                    {
+                        StopCoroutine(tombstonecoroutine);
+                        StopUsingTombstone();
+                    }
+                    tombstonecoroutine = StartCoroutine(UsingTombstone());
+                    audiocontroller.OnTombstone();
+                    lootslot.OnUsed();
+                }
+                if (lootslot.loottag == "Shotgun")
+                {
+                    if (shotguncoroutine != null) 
+                    {
+                        StopCoroutine(shotguncoroutine);    
+                        StopUsingShotgun(); 
+                    }
+                    shotguncoroutine = StartCoroutine(UsingShotgun());
+                    audiocontroller.Gunload.Play();
+                    lootslot.OnUsed();
+                }
+                if (lootslot.loottag == "Badge")
+                {
+                    if (badgecoroutine != null)
+                    {
+                        StopCoroutine(badgecoroutine);
+                        StopUsingBadge();
+                    }
+                    badgecoroutine = StartCoroutine(UsingBadge());
+                    audiocontroller.Gunload.Play();
+                    lootslot.OnUsed();
+                }
                 else lootslot.OnUsed();    
             }
         }
@@ -72,23 +132,23 @@ public class UsePU : MonoBehaviour
     //==========================CoffeePU==========================//
     private IEnumerator UsingCoffeee()
     {
-        PlayerMovement player = GameObject.Find("Player").GetComponent< PlayerMovement>();  
+        IsUsingCoffee = true;   
         player.MoveSpeed += 2f;
         player.MoveSpeed2 += 2f;
-        IsUsingCoffee = true;   
+
         yield return new WaitForSeconds(16f);
-        player.MoveSpeed -= 2f;
-        player.MoveSpeed2 -= 2f;     
+
         IsUsingCoffee = false;
+        player.MoveSpeed -= 2f;
+        player.MoveSpeed2 -= 2f;
     }
-    public void StopUsingCoffee()
+    void StopUsingCoffee()
     {
         if (IsUsingCoffee)
         {
-            PlayerMovement player = GameObject.Find("Player").GetComponent<PlayerMovement>();
             player.MoveSpeed -= 2f;
             player.MoveSpeed2 -= 2f; 
-            IsUsingCoffee= false;   
+            IsUsingCoffee = false;   
         }
     }
     public void CollidedCoffee()
@@ -101,26 +161,31 @@ public class UsePU : MonoBehaviour
         coffeecoroutine = StartCoroutine(UsingCoffeee());
     }
     //==========================CoffeePU==========================//
+
     //==========================BandolierPU==========================//
     private IEnumerator UsingBandolier()
     {
-        Gun gun = GameObject.Find("Gun").GetComponent<Gun>();
         gun.FireRate = 0.065f;
         gun.Damage = 4;
         IsUsingBandolier = true;    
+
         yield return new WaitForSeconds(12);
+
         gun.FireRate = 0.35f;
         gun.Damage = 1;
         IsUsingBandolier = false;   
+        
+        if (IsUsingBadge) gun.FireRate = 0.095f; 
     }
-    public void StopUsingBandolier()
+    void StopUsingBandolier()
     {
         if (IsUsingBandolier)
         {
-            Gun gun = GameObject.Find("Gun").GetComponent<Gun>();
             gun.FireRate = 0.35f;
             gun.Damage = 1;
-            IsUsingBandolier = false;   
+            IsUsingBandolier = false;
+
+            if (IsUsingBadge) gun.FireRate = 0.095f;
         }
     }
     public void CollidedBandolier()
@@ -158,4 +223,251 @@ public class UsePU : MonoBehaviour
         nukecoroutine = StartCoroutine(UsingNuke());    
     }
     //==========================NukePU==========================//
+
+    //==========================TombstonePU==========================//
+    private IEnumerator UsingTombstone()
+    {
+        if (IsUsingTombstone) yield break;
+
+        ChangeAnim(CBLightning);
+        IsUsingTombstone = true;
+        lightning.SetActive(true);
+        TombstoneBackground.SetActive(true);
+        audiocontroller.IsTombstonePlaying = true;
+
+        TimerUI.SetActive(false);
+        LootCanvas.SetActive(false);
+        leg.SetActive(false);
+        player.enabled = false;
+        gun.enabled = false;
+        spawnertop.enabled = false;
+        spawnerleft.enabled = false;
+        spawnerbot.enabled = false;
+        spawnerright.enabled = false;
+
+        GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
+        List<Seeker> seekers = new List<Seeker>();
+        List<AIPath> aipaths = new List<AIPath>();
+
+        foreach (GameObject zombie in zombies)
+        {
+            AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
+            Seeker seeker = zombie.GetComponent<Seeker>();
+            AIPath aipath = zombie.GetComponent<AIPath>();
+            if (destinationsetter != null)
+            {
+                destinationsetter.enabled = false; // Disable AIDestinationSetter
+                destinationsetters.Add(destinationsetter);
+            }
+            if (seeker != null)
+            {
+                seeker.enabled = false; // Disable Seeker
+                seekers.Add(seeker);
+            }
+            if (aipath != null)
+            {
+                aipath.enabled = false; // Disable AIPath
+                aipaths.Add(aipath);
+            }
+        }
+
+        yield return new WaitForSeconds(2);
+
+        ChangeAnim(CBZombie);
+        lightning.SetActive(false);
+        TombstoneBackground.SetActive(false);
+
+        TimerUI.SetActive(true);
+        LootCanvas.SetActive(true);
+        player.enabled = true;
+        player.MoveSpeed += 2.5f;
+        player.MoveSpeed2 += 2.5f;
+        gun.enabled = true;
+
+        foreach (AIDestinationSetter destinationsetter in destinationsetters)
+        {
+            destinationsetter.enabled = true;
+            int randomnumber = UnityEngine.Random.Range(1, 5);
+            if (randomnumber == 1) destinationsetter.target = spawnertop.transform;
+            if (randomnumber == 2) destinationsetter.target = spawnerleft.transform;
+            if (randomnumber == 3) destinationsetter.target = spawnerbot.transform;
+            if (randomnumber == 4) destinationsetter.target = spawnerright.transform;
+        }
+        foreach (Seeker seeker in seekers) seeker.enabled = true;
+        foreach (AIPath aipath in aipaths)
+        {
+            aipath.enabled = true;
+            aipath.maxSpeed = 2.5f;
+        }
+
+        yield return new WaitForSeconds(8.5f);
+
+        IsUsingTombstone = false;
+        if (player.isMoving == false && gun.isShooting == false)
+        {
+            ChangeAnim(DefaultState);
+        }
+        audiocontroller.IsTombstonePlaying = false;
+
+        leg.SetActive(true);
+        spawnertop.enabled = true;
+        spawnerleft.enabled = true;
+        spawnerbot.enabled = true;
+        spawnerright.enabled = true;
+
+        player.MoveSpeed -= 2.5f;
+        player.MoveSpeed2 -= 2.5f;
+
+        foreach (AIDestinationSetter destinationsetter in destinationsetters)
+        {
+            destinationsetter.target = player.transform;
+        }
+        foreach (AIPath aipath in aipaths) aipath.maxSpeed = 2;
+    }
+
+    void StopUsingTombstone()
+    {
+        if (IsUsingTombstone) 
+        {
+            IsUsingTombstone = false;
+            audiocontroller.IsTombstonePlaying = false;
+            lightning.SetActive(false);
+            TombstoneBackground.SetActive(false);
+
+            TimerUI.SetActive(true);
+            LootCanvas.SetActive(true);
+            player.enabled = true;
+            gun.enabled = true;
+            leg.SetActive(true);
+            spawnertop.enabled = true;
+            spawnerleft.enabled = true;
+            spawnerbot.enabled = true;
+            spawnerright.enabled = true;
+
+            player.MoveSpeed -= 2.5f;
+            player.MoveSpeed2 -= 2.5f;
+
+            GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject zombie in zombies)
+            {
+                AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
+                Seeker seeker = zombie.GetComponent<Seeker>();  
+                AIPath aipath = zombie.GetComponent<AIPath>();
+                if (destinationsetter != null) destinationsetter.target = player.transform;
+                if (seeker != null) seeker.enabled = true;
+                if (aipath != null) aipath.maxSpeed = 2;
+            }
+        }
+    }
+    public void CollidedTombstone()
+    {
+        if (tombstonecoroutine != null)
+        {
+            StopCoroutine(tombstonecoroutine);
+            StopUsingTombstone();
+        }
+        tombstonecoroutine = StartCoroutine(UsingTombstone());
+    }
+    //==========================TombstonePU==========================//
+
+    //==========================ShotgunPU==========================//
+    private IEnumerator UsingShotgun()
+    {
+        IsUsingShotgun = true;
+        gun.Damage = 4;
+
+        if (IsUsingBandolier) gun.FireRate = 0.065f;
+
+        yield return new WaitForSeconds(12f);
+
+        IsUsingShotgun = false;
+        gun.Damage = 1;
+
+        if (!IsUsingBandolier) gun.FireRate = 0.35f;
+    }
+    void StopUsingShotgun()
+    {
+        if (IsUsingShotgun)
+        {
+            IsUsingShotgun = false;
+            gun.Damage = 1;
+
+            if (!IsUsingBandolier) gun.FireRate = 0.35f;
+        }
+    }
+    public void CollidedShotgun()
+    {
+        if (shotguncoroutine != null)
+        {
+            StopCoroutine(shotguncoroutine);    
+            StopUsingShotgun(); 
+        }
+        shotguncoroutine = StartCoroutine(UsingShotgun());  
+    }
+    //==========================ShotgunPU==========================//
+
+    //==========================BadgePU==========================//
+    private IEnumerator UsingBadge()
+    {
+        IsUsingBadge = true;
+        gun.Damage = 4;
+        gun.FireRate = 0.095f;
+
+        if (IsUsingBandolier) gun.FireRate = 0.065f;
+        
+        player.MoveSpeed += 1.25f;
+        player.MoveSpeed2 += 1.25f;
+
+        yield return new WaitForSeconds(24f);
+
+        IsUsingBadge = false;
+        gun.Damage = 1;
+        gun.FireRate = 0.35f;
+
+        if (IsUsingBandolier) gun.FireRate = 0.065f; //Check if bandolier is still in used
+        
+        player.MoveSpeed -= 1.25f;
+        player.MoveSpeed2 -= 1.25f;
+    }
+    void StopUsingBadge()
+    {
+        if (IsUsingBadge)
+        {
+            IsUsingBadge = false;
+            gun.Damage = 1;
+            gun.FireRate = 0.35f;
+            if (IsUsingBandolier) gun.FireRate = 0.065f;
+            player.MoveSpeed -= 1.25f;
+            player.MoveSpeed2 -= 1.25f;
+        }
+    }
+    public void CollidedBadge()
+    {
+        if (badgecoroutine != null) 
+        {
+            StopCoroutine(badgecoroutine); 
+            StopUsingBadge();
+        }
+        badgecoroutine = StartCoroutine(UsingBadge());
+    }
+    //==========================BadgePU==========================//
+
+    //==========================WheelPU==========================//
+    private IEnumerator UsingWheel()
+    {
+        IsUsingWheel = true;
+
+        yield return new WaitForSeconds(12f);
+
+        IsUsingWheel = true;
+    }
+    //==========================WheelPU==========================//
+
+    void ChangeAnim(string newstate)
+    {
+        if (currentstate == newstate) return;
+        cbanim.Play(newstate);
+        currentstate = newstate;    
+    }
 }
