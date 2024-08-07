@@ -1,13 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Events;
-using Unity.VisualScripting;
-using System;
 using Pathfinding;
-using System.Security.Cryptography;
-using System.Runtime.CompilerServices;
+
 public class UsePU : MonoBehaviour
 {
     public Coroutine coffeecoroutine;
@@ -45,89 +40,79 @@ public class UsePU : MonoBehaviour
     const string CBZombie = "CBZombie";
     void Start()
     {
-        audiocontroller = GameObject.Find("Player").GetComponent<AudioController>();    
-        cbanim = GameObject.Find("Player").GetComponent<Animator>();
-        player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        player = FindObjectOfType<PlayerMovement>();
+        audiocontroller = player.GetComponent<AudioController>();    
+        cbanim = player.GetComponent<Animator>();
 
         spawnertop = GameObject.Find("SpawnerTop").GetComponent<Spawner>();
         spawnerleft = GameObject.Find("SpawnerLeft").GetComponent<Spawner>();
         spawnerbot = GameObject.Find("SpawnerBot").GetComponent<Spawner>();
         spawnerright = GameObject.Find("SpawnerRight").GetComponent<Spawner>();
 
-        gun = GameObject.Find("Gun").GetComponent<Gun>();   
-        lootslot = GameObject.Find("LootSlot").GetComponent<LootSlot>();
+        gun = FindObjectOfType<Gun>();   
+        lootslot = FindObjectOfType<LootSlot>();
     }
 
     void Update()
     {
-        if (lootslot.lootsprite != null)
+        if (lootslot.lootsprite == null) return;
+        if (!Input.GetKey(KeyCode.Space)) return;
+        if (lootslot.loottag == "Coffee")
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (coffeecoroutine != null)
             {
-                if (lootslot.loottag == "Coffee")
-                {
-                    if (coffeecoroutine != null)
-                    {
-                        StopCoroutine(coffeecoroutine);
-                        StopUsingCoffee();
-                    }
-                    coffeecoroutine = StartCoroutine(UsingCoffeee());
-                    audiocontroller.PU.Play();
-                    lootslot.OnUsed();
-                }
-                if (lootslot.loottag == "Bandolier")
-                {
-                    if (bandoliercoroutine != null)
-                    {
-                        StopCoroutine(bandoliercoroutine);
-                        StopUsingBandolier();
-                    }
-                    bandoliercoroutine = StartCoroutine(UsingBandolier());  
-                    audiocontroller.Gunload.Play();
-                    lootslot.OnUsed();
-                }
-                if (lootslot.loottag == "Nuke")
-                {
-                    if(nukecoroutine != null) StopCoroutine(nukecoroutine);             
-                    nukecoroutine = StartCoroutine(UsingNuke());
-                    lootslot.OnUsed();
-                }
-                if (lootslot.loottag == "Tombstone")
-                {
-                    if (tombstonecoroutine != null)
-                    {
-                        StopCoroutine(tombstonecoroutine);
-                        StopUsingTombstone();
-                    }
-                    tombstonecoroutine = StartCoroutine(UsingTombstone());
-                    audiocontroller.OnTombstone();
-                    lootslot.OnUsed();
-                }
-                if (lootslot.loottag == "Shotgun")
-                {
-                    if (shotguncoroutine != null) 
-                    {
-                        StopCoroutine(shotguncoroutine);    
-                        StopUsingShotgun(); 
-                    }
-                    shotguncoroutine = StartCoroutine(UsingShotgun());
-                    audiocontroller.Gunload.Play();
-                    lootslot.OnUsed();
-                }
-                if (lootslot.loottag == "Badge")
-                {
-                    if (badgecoroutine != null)
-                    {
-                        StopCoroutine(badgecoroutine);
-                        StopUsingBadge();
-                    }
-                    badgecoroutine = StartCoroutine(UsingBadge());
-                    audiocontroller.Gunload.Play();
-                    lootslot.OnUsed();
-                }
-                else lootslot.OnUsed();    
+                StopCoroutine(coffeecoroutine);
+                StopUsingCoffee();
             }
+            coffeecoroutine = StartCoroutine(UsingCoffeee());
+            audiocontroller.PU.Play();
         }
+        else if (lootslot.loottag == "Bandolier")
+        {
+            if (bandoliercoroutine != null)
+            {
+                StopCoroutine(bandoliercoroutine);
+                StopUsingBandolier();
+            }
+            bandoliercoroutine = StartCoroutine(UsingBandolier());  
+            audiocontroller.Gunload.Play();
+        }
+        else if (lootslot.loottag == "Nuke")
+        {
+            if(nukecoroutine != null) StopCoroutine(nukecoroutine);             
+            nukecoroutine = StartCoroutine(UsingNuke());
+        }
+        else if (lootslot.loottag == "Tombstone")
+        {
+            if (tombstonecoroutine != null)
+            {
+                StopCoroutine(tombstonecoroutine);
+                StopUsingTombstone();
+            }
+            tombstonecoroutine = StartCoroutine(UsingTombstone());
+            audiocontroller.OnTombstone();
+        }
+        else if (lootslot.loottag == "Shotgun")
+        {
+            if (shotguncoroutine != null) 
+            {
+                StopCoroutine(shotguncoroutine);    
+                StopUsingShotgun(); 
+            }
+            shotguncoroutine = StartCoroutine(UsingShotgun());
+            audiocontroller.Gunload.Play();
+        }
+        else if (lootslot.loottag == "Badge")
+        {
+            if (badgecoroutine != null)
+            {
+                StopCoroutine(badgecoroutine);
+                StopUsingBadge();
+            }
+            badgecoroutine = StartCoroutine(UsingBadge());
+            audiocontroller.Gunload.Play();
+        }
+        lootslot.OnUsed();    
     }
     //==========================CoffeePU==========================//
     private IEnumerator UsingCoffeee()

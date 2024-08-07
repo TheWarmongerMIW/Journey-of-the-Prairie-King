@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
     }
     private void Update()
     {
-        if (instruction == null)
+        if (instruction.isActiveAndEnabled == false)
         {
             if (timer.TimeRemaining <= 0) return;
             if (GateList.Count <= 0) GateList = new List<Transform>(Gates);

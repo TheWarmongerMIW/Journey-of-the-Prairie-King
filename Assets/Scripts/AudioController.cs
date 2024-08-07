@@ -9,9 +9,10 @@ public class AudioController : MonoBehaviour
     public AudioSource Gunload;
     public AudioSource Tombstone;
     public AudioSource Nuke;
-    public Instruction instruction;
+    public AudioSource Coin15;
     public bool IsPlaying = false;
     public bool IsTombstonePlaying = false;   
+    private Instruction instruction;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class AudioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (instruction == null && IsPlaying == false && IsTombstonePlaying == false)
+        if (instruction.isActiveAndEnabled == false && IsPlaying == false && IsTombstonePlaying == false)
         {
             IsPlaying = true;   
             Overworld.Play();

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Instruction : MonoBehaviour
 {
-    public float timer = 0;
-    private float destroytime = 5;
-
     private void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= destroytime) Destroy(gameObject);   
+        StartCoroutine(TurnOff());  
+    }
+
+    private IEnumerator TurnOff()
+    {
+        yield return new WaitForSeconds(5f);
+        this.gameObject.SetActive(false);   
     }
 }
