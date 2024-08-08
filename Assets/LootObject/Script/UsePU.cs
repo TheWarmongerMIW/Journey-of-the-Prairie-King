@@ -74,12 +74,12 @@ public class UsePU : MonoBehaviour
                 StopCoroutine(bandoliercoroutine);
                 StopUsingBandolier();
             }
-            bandoliercoroutine = StartCoroutine(UsingBandolier());  
+            bandoliercoroutine = StartCoroutine(UsingBandolier());
             audiocontroller.Gunload.Play();
         }
         else if (lootslot.loottag == "Nuke")
         {
-            if(nukecoroutine != null) StopCoroutine(nukecoroutine);             
+            if (nukecoroutine != null) StopCoroutine(nukecoroutine);
             nukecoroutine = StartCoroutine(UsingNuke());
         }
         else if (lootslot.loottag == "Tombstone")
@@ -94,10 +94,10 @@ public class UsePU : MonoBehaviour
         }
         else if (lootslot.loottag == "Shotgun")
         {
-            if (shotguncoroutine != null) 
+            if (shotguncoroutine != null)
             {
-                StopCoroutine(shotguncoroutine);    
-                StopUsingShotgun(); 
+                StopCoroutine(shotguncoroutine);
+                StopUsingShotgun();
             }
             shotguncoroutine = StartCoroutine(UsingShotgun());
             audiocontroller.Gunload.Play();
@@ -111,6 +111,11 @@ public class UsePU : MonoBehaviour
             }
             badgecoroutine = StartCoroutine(UsingBadge());
             audiocontroller.Gunload.Play();
+        }
+        else if (lootslot.loottag == "Smoke bomb")
+        {
+            StartCoroutine(UsingSmokeBomb());   
+
         }
         lootslot.OnUsed();    
     }
@@ -448,6 +453,79 @@ public class UsePU : MonoBehaviour
         IsUsingWheel = true;
     }
     //==========================WheelPU==========================//
+
+    //==========================SmokeBombPU==========================//
+
+    //Max horitonztal: 9.5 , -5,4
+    //Max vertical: 6.4 , -8.4 
+    private IEnumerator UsingSmokeBomb()
+    {
+        gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7));
+        ParticleSystem particlesystem = GameObject.Find("NukeExplosion").GetComponent<ParticleSystem>();
+        particlesystem.Play();
+        audiocontroller.Nuke.Play();
+
+        GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
+        List<Seeker> seekers = new List<Seeker>();
+        List<AIPath> aipaths = new List<AIPath>();
+
+        foreach (GameObject zombie in zombies)
+        {
+            Rigidbody2D rigidbody2D = zombie.GetComponent<Rigidbody2D>();
+            AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
+            Seeker seeker = zombie.GetComponent<Seeker>();
+            AIPath aipath = zombie.GetComponent<AIPath>();
+            if (rigidbody2D != null)
+            {
+                rigidbody2D.bodyType = RigidbodyType2D.Static;
+            }
+            if (destinationsetter != null)
+            {
+                destinationsetter.enabled = false; // Disable AIDestinationSetter
+                destinationsetters.Add(destinationsetter);
+            }
+            if (seeker != null)
+            {
+                seeker.enabled = false; // Disable Seeker
+                seekers.Add(seeker);
+            }
+            if (aipath != null)
+            {
+                aipath.enabled = false; // Disable AIPath
+                aipaths.Add(aipath);
+            }
+        }
+
+        yield return new WaitForSeconds(2);
+
+        foreach (GameObject zombie in zombies)
+        {
+            Rigidbody2D rigidbody2D = zombie.GetComponent<Rigidbody2D>();
+            AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
+            Seeker seeker = zombie.GetComponent<Seeker>();
+            AIPath aipath = zombie.GetComponent<AIPath>();
+            if (rigidbody2D != null)
+            {
+                rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            }
+            if (destinationsetter != null)
+            {
+                destinationsetter.enabled = true; // Disable AIDestinationSetter
+                destinationsetters.Add(destinationsetter);
+            }
+            if (seeker != null)
+            {
+                seeker.enabled = true; // Disable Seeker
+                seekers.Add(seeker);
+            }
+            if (aipath != null)
+            {
+                aipath.enabled = true; // Disable AIPath
+                aipaths.Add(aipath);
+            }
+        }
+    }
 
     void ChangeAnim(string newstate)
     {

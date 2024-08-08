@@ -10,10 +10,11 @@ public class AudioController : MonoBehaviour
     public AudioSource Tombstone;
     public AudioSource Nuke;
     public AudioSource Coin15;
+
     public bool IsPlaying = false;
     public bool IsTombstonePlaying = false;   
     private Instruction instruction;
-    // Start is called before the first frame update
+
     void Start()
     {
         instruction = GameObject.Find("Instruction").GetComponent<Instruction>();
