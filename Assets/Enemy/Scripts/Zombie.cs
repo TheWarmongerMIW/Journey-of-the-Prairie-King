@@ -23,7 +23,13 @@ public class Zombie : MonoBehaviour
 
     private void Update()
     {
-        if (healthController.Health <= 0) this.gameObject.tag = "DeadEnemy";
+        if (healthController.Health <= 0)
+        {
+            this.gameObject.tag = "DeadEnemy";
+            aipath.enabled = false;
+            seeker.enabled = false;
+            destinationsetter.enabled = false;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

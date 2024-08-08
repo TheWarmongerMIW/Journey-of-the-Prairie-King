@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using JetBrains.Annotations;
 
 public class UsePU : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UsePU : MonoBehaviour
     public Coroutine tombstonecoroutine;
     public Coroutine shotguncoroutine;
     public Coroutine badgecoroutine;
+    public Coroutine smokebombcoroutine;
 
     [SerializeField] private Spawner spawnertop; 
     [SerializeField] private Spawner spawnerleft; 
@@ -34,6 +36,7 @@ public class UsePU : MonoBehaviour
     [SerializeField] private bool IsUsingCoffee = false;
     [SerializeField] private bool IsUsingBandolier = false;
     [SerializeField] private string currentstate;
+    [SerializeField] private bool IsUsingSmokeBomb = false;
 
     const string DefaultState = "Default State";
     const string CBLightning = "CBLightning";
@@ -114,8 +117,12 @@ public class UsePU : MonoBehaviour
         }
         else if (lootslot.loottag == "Smoke bomb")
         {
-            StartCoroutine(UsingSmokeBomb());   
-
+            if (smokebombcoroutine != null)
+            {
+                StopCoroutine(smokebombcoroutine);
+                StopUsingSmokeBomb();
+            }
+            smokebombcoroutine = StartCoroutine(UsingSmokeBomb());   
         }
         lootslot.OnUsed();    
     }
@@ -460,12 +467,14 @@ public class UsePU : MonoBehaviour
     //Max vertical: 6.4 , -8.4 
     private IEnumerator UsingSmokeBomb()
     {
+        IsUsingSmokeBomb = true;    
         gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7));
         ParticleSystem particlesystem = GameObject.Find("NukeExplosion").GetComponent<ParticleSystem>();
         particlesystem.Play();
         audiocontroller.Nuke.Play();
 
         GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();    
         List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
         List<Seeker> seekers = new List<Seeker>();
         List<AIPath> aipaths = new List<AIPath>();
@@ -479,6 +488,7 @@ public class UsePU : MonoBehaviour
             if (rigidbody2D != null)
             {
                 rigidbody2D.bodyType = RigidbodyType2D.Static;
+                rigidbody2Ds.Add(rigidbody2D);
             }
             if (destinationsetter != null)
             {
@@ -498,6 +508,8 @@ public class UsePU : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2);
+        
+        IsUsingSmokeBomb = false;
 
         foreach (GameObject zombie in zombies)
         {
@@ -508,6 +520,7 @@ public class UsePU : MonoBehaviour
             if (rigidbody2D != null)
             {
                 rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                rigidbody2Ds.Add(rigidbody2D);
             }
             if (destinationsetter != null)
             {
@@ -523,6 +536,48 @@ public class UsePU : MonoBehaviour
             {
                 aipath.enabled = true; // Disable AIPath
                 aipaths.Add(aipath);
+            }
+        }
+    }
+
+    public void StopUsingSmokeBomb()
+    {
+        if (IsUsingSmokeBomb)
+        {
+            IsUsingSmokeBomb = false;
+
+            GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+            List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();
+            List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
+            List<Seeker> seekers = new List<Seeker>();
+            List<AIPath> aipaths = new List<AIPath>();
+
+            foreach (GameObject zombie in zombies)
+            {
+                Rigidbody2D rigidbody2D = zombie.GetComponent<Rigidbody2D>();
+                AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
+                Seeker seeker = zombie.GetComponent<Seeker>();
+                AIPath aipath = zombie.GetComponent<AIPath>();
+                if (rigidbody2D != null)
+                {
+                    rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                    rigidbody2Ds.Add(rigidbody2D);
+                }
+                if (destinationsetter != null)
+                {
+                    destinationsetter.enabled = true; 
+                    destinationsetters.Add(destinationsetter);
+                }
+                if (seeker != null)
+                {
+                    seeker.enabled = true; 
+                    seekers.Add(seeker);
+                }
+                if (aipath != null)
+                {
+                    aipath.enabled = true; 
+                    aipaths.Add(aipath);
+                }
             }
         }
     }
