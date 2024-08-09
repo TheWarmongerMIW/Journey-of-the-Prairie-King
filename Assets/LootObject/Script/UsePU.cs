@@ -467,13 +467,16 @@ public class UsePU : MonoBehaviour
     //Max vertical: 6.4 , -8.4 
     private IEnumerator UsingSmokeBomb()
     {
+        Transform zombietransform = zombie.transform;
+
         IsUsingSmokeBomb = true;    
-        gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7));
+        gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7)) - zombietransform;
         ParticleSystem particlesystem = GameObject.Find("NukeExplosion").GetComponent<ParticleSystem>();
         particlesystem.Play();
         audiocontroller.Nuke.Play();
 
         GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<Transform> transforms = new List<Transform>();
         List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();    
         List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
         List<Seeker> seekers = new List<Seeker>();
@@ -481,10 +484,15 @@ public class UsePU : MonoBehaviour
 
         foreach (GameObject zombie in zombies)
         {
+            Transform zombietransform = zombie.transform;
             Rigidbody2D rigidbody2D = zombie.GetComponent<Rigidbody2D>();
             AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
             Seeker seeker = zombie.GetComponent<Seeker>();
             AIPath aipath = zombie.GetComponent<AIPath>();
+            if (zombietransform != null)
+            {
+                Debug.Log(zombietransform.position);
+            }
             if (rigidbody2D != null)
             {
                 rigidbody2D.bodyType = RigidbodyType2D.Static;
@@ -547,6 +555,7 @@ public class UsePU : MonoBehaviour
             IsUsingSmokeBomb = false;
 
             GameObject[] zombies = GameObject.FindGameObjectsWithTag("Enemy");
+            List<Transform> transforms = new List<Transform>(); 
             List<Rigidbody2D> rigidbody2Ds = new List<Rigidbody2D>();
             List<AIDestinationSetter> destinationsetters = new List<AIDestinationSetter>();
             List<Seeker> seekers = new List<Seeker>();
@@ -558,6 +567,7 @@ public class UsePU : MonoBehaviour
                 AIDestinationSetter destinationsetter = zombie.GetComponent<AIDestinationSetter>();
                 Seeker seeker = zombie.GetComponent<Seeker>();
                 AIPath aipath = zombie.GetComponent<AIPath>();
+
                 if (rigidbody2D != null)
                 {
                     rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
