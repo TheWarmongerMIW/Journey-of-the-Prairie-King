@@ -467,10 +467,8 @@ public class UsePU : MonoBehaviour
     //Max vertical: 6.4 , -8.4 
     private IEnumerator UsingSmokeBomb()
     {
-        Transform zombietransform = zombie.transform;
-
         IsUsingSmokeBomb = true;    
-        gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7)) - zombietransform;
+        gameObject.transform.position = new Vector2(Random.Range(-5, 10), Random.Range(-8, 7));
         ParticleSystem particlesystem = GameObject.Find("NukeExplosion").GetComponent<ParticleSystem>();
         particlesystem.Play();
         audiocontroller.Nuke.Play();
