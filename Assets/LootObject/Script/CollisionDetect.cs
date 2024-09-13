@@ -58,6 +58,10 @@ public class CollisionDetect : MonoBehaviour
                     usepu.CollidedBadge();
                     audiocontroller.Gunload.Play();
                 }
+                if (this.gameObject.tag == "Smoke bomb")
+                {
+                    usepu.CollidedSmokeBomb(); 
+                }
             }
         }
         if (this.gameObject.tag == "Coin1" || this.gameObject.tag == "Coin5")

@@ -105,7 +105,8 @@ public class Gun : MonoBehaviour
         if (isShooting == false && playermovement.isMoving == false && usepu.IsUsingTombstone == false) ChangeAnim(DefaultState);
     }
     private void FixedUpdate()
-    {if (Time.time > LastShootTime + FireRate)
+    {
+        if (Time.time > LastShootTime + FireRate)
         {
             if (Input.GetKey(UpKey) || Input.GetKey(LeftKey) || Input.GetKey(DownKey) || Input.GetKey(RightKey))
             {

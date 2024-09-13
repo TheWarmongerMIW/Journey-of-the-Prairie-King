@@ -5,16 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class Scenemanager : MonoBehaviour
 {
-    private HealthController healthcontroller;
-    private Instruction instruction;
-    // Start is called before the first frame update
+    [SerializeField] private HealthController healthcontroller;
+    [SerializeField] private Instruction instruction;
     void Start()
     {
-        healthcontroller = GetComponent<HealthController>();    
-        instruction = GameObject.Find("Instruction").GetComponent<Instruction>();  
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (healthcontroller.Health <= 0)

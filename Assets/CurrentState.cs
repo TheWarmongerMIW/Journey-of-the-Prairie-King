@@ -1,34 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CurrentState : MonoBehaviour
 {
-    [SerializeField] public int Lives;
-    [SerializeField] public int Coins;
-    [SerializeField] public float Time;
+    [SerializeField] private int Lives;
+    [SerializeField] private int Coins;
+    [SerializeField] private float Time;
+    [SerializeField] private LootManager lootmanager;
+    [SerializeField] private Timercontroller timer;
+    [SerializeField] private TextMeshProUGUI coinsCount;
 
-    private LootManager lootmanager;
-    private Timercontroller timer;
-
-    /*public CurrentState(int lives, int coins, float time)
-    {
-        this.Lives = lives; 
-        this.Coins = coins; 
-        this.Time = time; 
-    }*/ 
     
     void Start()
     {
-        lootmanager = GameObject.Find("LootCanvas").GetComponent<LootManager>();    
-        timer = GameObject.Find("Timer").GetComponent<Timercontroller>();   
+       
     }
-
-    // Update is called once per frame
     void Update()
     {
         this.Lives = lootmanager.NumberofLives;
-        this.Coins = lootmanager.NumberofCoins; 
         this.Time = timer.TimeRemaining;
+
+        Coin();
+    }
+
+    public void Coin()
+    {
+        PlayerPrefs.SetInt("CurrentState", lootmanager.NumberofCoins);
+        Debug.Log(lootmanager.NumberofCoins);
+        coinsCount.text = lootmanager.NumberofCoins.ToString();
     }
 }

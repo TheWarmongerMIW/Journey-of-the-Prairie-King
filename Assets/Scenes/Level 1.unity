@@ -8913,6 +8913,9 @@ MonoBehaviour:
   Lives: 0
   Coins: 0
   Time: 0
+  lootmanager: {fileID: 1780098521}
+  timer: {fileID: 1663207725}
+  coinsCount: {fileID: 1959756961}
 --- !u!4 &1906987897
 Transform:
   m_ObjectHideFlags: 0
@@ -15604,6 +15607,7 @@ MonoBehaviour:
   IsUsingCoffee: 0
   IsUsingBandolier: 0
   currentstate: 
+  IsUsingSmokeBomb: 0
 --- !u!82 &9163861432091346302
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15904,6 +15908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f555cda837927ef45836d6308be9e3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthcontroller: {fileID: 9163861432091346294}
+  instruction: {fileID: 427195750}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

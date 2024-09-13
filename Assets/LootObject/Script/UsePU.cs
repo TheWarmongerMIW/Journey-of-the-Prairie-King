@@ -590,6 +590,16 @@ public class UsePU : MonoBehaviour
         }
     }
 
+    public void CollidedSmokeBomb()
+    {
+        if (smokebombcoroutine != null)
+        {
+            StopCoroutine(smokebombcoroutine);
+            StopUsingSmokeBomb();
+        }
+        smokebombcoroutine = StartCoroutine(UsingSmokeBomb());
+    }
+
     void ChangeAnim(string newstate)
     {
         if (currentstate == newstate) return;
