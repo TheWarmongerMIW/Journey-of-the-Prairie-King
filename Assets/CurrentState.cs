@@ -28,7 +28,6 @@ public class CurrentState : MonoBehaviour
     public void Coin()
     {
         PlayerPrefs.SetInt("CurrentState", lootmanager.NumberofCoins);
-        Debug.Log(lootmanager.NumberofCoins);
         coinsCount.text = lootmanager.NumberofCoins.ToString();
     }
 }

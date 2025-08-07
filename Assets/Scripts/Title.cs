@@ -11,8 +11,8 @@ public class Title : MonoBehaviour
 
     private void Start()
     {
-        audiocontroller = GameObject.Find("Player").GetComponent<AudioController>();    
-        healthcontroller = GameObject.Find("Player").GetComponent<HealthController>();    
+        //audiocontroller = GameObject.Find("Player").GetComponent<AudioController>();    
+        //healthcontroller = GameObject.Find("Player").GetComponent<HealthController>();    
     }
 
     // Update is called once per frame
@@ -25,14 +25,14 @@ public class Title : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
-        if (healthcontroller.Health == 0)
-        { 
-            StartCoroutine(OnDeath());
-        }
+        //if (healthcontroller.Health == 0)
+        //{ 
+        //    StartCoroutine(OnDeath());
+        //}
     }
-    private IEnumerator OnDeath()
-    {
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+    //private IEnumerator OnDeath()
+    //{
+    //    yield return new WaitForSeconds(3f);
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //}
 }

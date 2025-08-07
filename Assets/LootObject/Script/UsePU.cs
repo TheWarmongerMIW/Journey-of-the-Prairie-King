@@ -33,6 +33,7 @@ public class UsePU : MonoBehaviour
     public bool IsUsingShotgun = false;
     public bool IsUsingBadge = false;
     public bool IsUsingWheel = false;
+
     [SerializeField] private bool IsUsingCoffee = false;
     [SerializeField] private bool IsUsingBandolier = false;
     [SerializeField] private string currentstate;
